@@ -1,0 +1,1470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SHUMPHY — Clothing For Every Moment</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&family=Cinzel:wght@400;500;600;700&family=Raleway:wght@100;200;300;400;500&display=swap" rel="stylesheet">
+<style>
+/* =========================================
+   CSS VARIABLES & RESET
+========================================= */
+:root {
+  --gold:       #c9952b;
+  --gold2:      #e8b84a;
+  --gold3:      #f5d878;
+  --gold-dark:  #8b6318;
+  --black:      #080604;
+  --black2:     #100e0b;
+  --black3:     #1a1711;
+  --cream:      #f8f3eb;
+  --cream2:     #ede6d8;
+  --silver:     #d4cfc8;
+  --white:      #ffffff;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  background: var(--black);
+  color: var(--cream);
+  font-family: 'Raleway', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+  cursor: default;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 2px; }
+::-webkit-scrollbar-track { background: var(--black); }
+::-webkit-scrollbar-thumb { background: var(--gold-dark); }
+
+/* =========================================
+   NOISE OVERLAY
+========================================= */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0.35;
+}
+
+/* =========================================
+   ANIMATIONS
+========================================= */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(32px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+@keyframes lineGrow {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-8px); }
+}
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(201,149,43,.15); }
+  50%       { box-shadow: 0 0 40px rgba(201,149,43,.35); }
+}
+@keyframes borderPulse {
+  0%, 100% { border-color: rgba(201,149,43,.3); }
+  50%       { border-color: rgba(201,149,43,.7); }
+}
+@keyframes countDown {
+  from { opacity: 0; transform: scale(.9); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* Reveal on scroll */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity .9s cubic-bezier(.25,.46,.45,.94), transform .9s cubic-bezier(.25,.46,.45,.94);
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: .1s; }
+.reveal-delay-2 { transition-delay: .22s; }
+.reveal-delay-3 { transition-delay: .34s; }
+.reveal-delay-4 { transition-delay: .46s; }
+
+/* =========================================
+   NAVIGATION
+========================================= */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 500;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 56px;
+  transition: background .4s, border-color .4s;
+}
+nav.scrolled {
+  background: rgba(8,6,4,.94);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(201,149,43,.12);
+}
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.nav-logo img {
+  height: 48px;
+  width: auto;
+  filter: drop-shadow(0 2px 8px rgba(201,149,43,.3));
+}
+.nav-brand {
+  font-family: 'Cinzel', serif;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: .45em;
+  color: var(--cream);
+  text-decoration: none;
+}
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  list-style: none;
+}
+.nav-links a {
+  font-size: 9px;
+  letter-spacing: .4em;
+  color: rgba(248,243,235,.5);
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color .3s;
+  cursor: pointer;
+}
+.nav-links a:hover { color: var(--gold); }
+.nav-cta {
+  font-size: 9px;
+  letter-spacing: .35em;
+  color: var(--gold);
+  border: 1px solid rgba(201,149,43,.4);
+  padding: 10px 24px;
+  background: transparent;
+  font-family: 'Raleway', sans-serif;
+  cursor: pointer;
+  transition: all .3s;
+  text-transform: uppercase;
+}
+.nav-cta:hover {
+  background: var(--gold);
+  color: var(--black);
+  border-color: var(--gold);
+}
+
+/* =========================================
+   HERO
+========================================= */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  padding: 120px 40px 80px;
+  text-align: center;
+}
+
+/* Radial gold glow background */
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-55%);
+  width: 700px;
+  height: 700px;
+  background: radial-gradient(ellipse at center, rgba(201,149,43,.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Thin diagonal lines decoration */
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 80px,
+      rgba(201,149,43,.02) 80px,
+      rgba(201,149,43,.02) 81px
+    );
+  pointer-events: none;
+}
+
+.hero-logo {
+  width: 280px;
+  height: auto;
+  margin-bottom: 32px;
+  animation: fadeIn 1.2s ease .2s both, float 6s ease-in-out 1.4s infinite;
+  filter: drop-shadow(0 8px 32px rgba(201,149,43,.25));
+  position: relative;
+  z-index: 2;
+}
+
+.hero-eyebrow {
+  font-size: 9px;
+  letter-spacing: .65em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  animation: fadeUp 1s ease .6s both;
+  position: relative;
+  z-index: 2;
+}
+
+.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(48px, 8vw, 96px);
+  font-weight: 300;
+  line-height: .9;
+  letter-spacing: .08em;
+  color: var(--white);
+  margin-bottom: 6px;
+  animation: fadeUp 1s ease .8s both;
+  position: relative;
+  z-index: 2;
+}
+
+.hero-title-italic {
+  font-style: italic;
+  color: var(--gold2);
+  display: block;
+  font-size: clamp(36px, 6vw, 72px);
+  opacity: .6;
+  margin-top: 4px;
+}
+
+.hero-tagline {
+  font-size: 11px;
+  letter-spacing: .5em;
+  color: rgba(248,243,235,.4);
+  text-transform: uppercase;
+  margin-bottom: 52px;
+  animation: fadeUp 1s ease 1s both;
+  position: relative;
+  z-index: 2;
+}
+
+/* Gold shimmer divider */
+.gold-divider {
+  width: 200px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 0 auto 48px;
+  animation: fadeIn 1s ease 1.2s both, lineGrow 1s ease 1.2s both;
+  transform-origin: center;
+  position: relative;
+  z-index: 2;
+}
+.gold-divider-ornament {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  width: 8px;
+  height: 8px;
+  background: var(--gold);
+  rotate: 45deg;
+}
+
+/* Launch badge */
+.launch-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 32px;
+  border: 1px solid rgba(201,149,43,.35);
+  background: rgba(201,149,43,.06);
+  animation: fadeUp 1s ease 1.4s both, borderPulse 3s ease-in-out 2.4s infinite;
+  position: relative;
+  z-index: 2;
+}
+.launch-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  animation: glow 2s ease-in-out infinite;
+}
+.launch-text {
+  font-size: 9px;
+  letter-spacing: .45em;
+  color: var(--gold);
+  text-transform: uppercase;
+}
+
+/* =========================================
+   TICKER
+========================================= */
+.ticker-wrap {
+  overflow: hidden;
+  border-top: 1px solid rgba(201,149,43,.08);
+  border-bottom: 1px solid rgba(201,149,43,.08);
+  background: var(--black2);
+  padding: 14px 0;
+}
+.ticker-track {
+  display: flex;
+  white-space: nowrap;
+  animation: ticker 24s linear infinite;
+}
+.ticker-item {
+  font-size: 9px;
+  letter-spacing: .5em;
+  color: rgba(201,149,43,.35);
+  text-transform: uppercase;
+  padding: 0 48px;
+  flex-shrink: 0;
+}
+.ticker-sep { color: var(--gold); opacity: .3; }
+
+/* =========================================
+   ABOUT SECTION
+========================================= */
+.section {
+  padding: 120px 80px;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+.section-eyebrow {
+  font-size: 9px;
+  letter-spacing: .55em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(36px, 5vw, 64px);
+  font-weight: 300;
+  color: var(--white);
+  line-height: 1.1;
+  margin-bottom: 24px;
+}
+.section-title em {
+  font-style: italic;
+  color: var(--gold2);
+  opacity: .7;
+}
+.section-body {
+  font-size: 14px;
+  line-height: 2;
+  color: rgba(248,243,235,.55);
+  max-width: 640px;
+}
+
+/* About grid */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+.about-visual {
+  position: relative;
+}
+.about-frame {
+  border: 1px solid rgba(201,149,43,.18);
+  padding: 56px 48px;
+  background: var(--black2);
+  position: relative;
+  text-align: center;
+}
+.about-frame::before,
+.about-frame::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-color: var(--gold);
+  border-style: solid;
+  opacity: .5;
+}
+.about-frame::before { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
+.about-frame::after  { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
+.about-frame-logo {
+  width: 200px;
+  height: auto;
+  margin: 0 auto 28px;
+  filter: drop-shadow(0 4px 20px rgba(201,149,43,.2));
+}
+.about-frame-tagline {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-style: italic;
+  font-weight: 300;
+  color: var(--gold2);
+  opacity: .8;
+  letter-spacing: .1em;
+}
+.about-frame-origin {
+  font-size: 9px;
+  letter-spacing: .5em;
+  color: rgba(201,149,43,.4);
+  text-transform: uppercase;
+  margin-top: 12px;
+}
+
+/* =========================================
+   PRODUCTS SECTION
+========================================= */
+.products-section {
+  padding: 80px 0 120px;
+  background: var(--black2);
+  border-top: 1px solid rgba(201,149,43,.06);
+  border-bottom: 1px solid rgba(201,149,43,.06);
+}
+.products-inner {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 80px;
+}
+.products-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 64px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+.product-card {
+  position: relative;
+  overflow: hidden;
+  background: var(--black3);
+  cursor: pointer;
+  group: true;
+}
+.product-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 40%, rgba(8,6,4,.95) 100%);
+  z-index: 1;
+}
+.product-img {
+  height: 480px;
+  overflow: hidden;
+  position: relative;
+}
+.product-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .8s cubic-bezier(.25,.46,.45,.94);
+  filter: brightness(.75) saturate(.9);
+}
+.product-card:hover .product-img img {
+  transform: scale(1.07);
+  filter: brightness(.85) saturate(1);
+}
+.product-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 28px;
+  z-index: 2;
+  transform: translateY(6px);
+  transition: transform .4s ease;
+}
+.product-card:hover .product-info {
+  transform: translateY(0);
+}
+.product-cat {
+  font-size: 8px;
+  letter-spacing: .4em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.product-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px;
+  font-weight: 400;
+  color: var(--white);
+  margin-bottom: 6px;
+}
+.product-desc {
+  font-size: 11px;
+  color: rgba(248,243,235,.5);
+  letter-spacing: .08em;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: all .4s ease .05s;
+}
+.product-card:hover .product-desc {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Product placeholders (elegant dark cards with icon) */
+.product-placeholder {
+  height: 480px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: linear-gradient(135deg, var(--black3), var(--black2));
+  border: 1px solid rgba(201,149,43,.1);
+}
+.prod-icon {
+  width: 64px;
+  height: 64px;
+  opacity: .4;
+}
+.prod-coming {
+  font-size: 8px;
+  letter-spacing: .5em;
+  color: rgba(201,149,43,.3);
+  text-transform: uppercase;
+}
+
+/* =========================================
+   LAUNCH COUNTRIES
+========================================= */
+.countries-section {
+  padding: 120px 80px;
+  max-width: 1300px;
+  margin: 0 auto;
+  text-align: center;
+}
+.countries-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  margin-top: 64px;
+}
+.country-card {
+  position: relative;
+  overflow: hidden;
+  padding: 72px 56px;
+  background: var(--black2);
+  border: 1px solid rgba(201,149,43,.1);
+  text-align: center;
+  cursor: pointer;
+  transition: all .4s ease;
+  text-decoration: none;
+  display: block;
+}
+.country-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 100%, rgba(201,149,43,.06), transparent 70%);
+  opacity: 0;
+  transition: opacity .4s ease;
+}
+.country-card:hover {
+  border-color: rgba(201,149,43,.35);
+}
+.country-card:hover::before {
+  opacity: 1;
+}
+.country-flag {
+  font-size: 52px;
+  margin-bottom: 20px;
+  display: block;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,.5));
+}
+.country-name {
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: .5em;
+  color: var(--cream);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.country-domain {
+  font-size: 11px;
+  letter-spacing: .25em;
+  color: var(--gold);
+  margin-bottom: 16px;
+  opacity: .8;
+}
+.country-status {
+  display: inline-block;
+  font-size: 8px;
+  letter-spacing: .4em;
+  color: rgba(201,149,43,.5);
+  border: 1px solid rgba(201,149,43,.2);
+  padding: 5px 16px;
+  text-transform: uppercase;
+}
+.country-card:hover .country-status {
+  color: var(--gold);
+  border-color: rgba(201,149,43,.45);
+}
+.country-arrow {
+  position: absolute;
+  bottom: 24px;
+  right: 28px;
+  font-size: 18px;
+  color: rgba(201,149,43,.25);
+  transition: all .3s ease;
+}
+.country-card:hover .country-arrow {
+  color: var(--gold);
+  transform: translateX(4px);
+}
+
+/* =========================================
+   COLLECTIONS TEASER
+========================================= */
+.collections-section {
+  padding: 0 80px 120px;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+.coll-grid {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 1px;
+  background: rgba(201,149,43,.08);
+  margin-top: 56px;
+}
+.coll-item {
+  background: var(--black);
+  padding: 48px 36px;
+  position: relative;
+  transition: background .3s;
+}
+.coll-item:hover { background: var(--black2); }
+.coll-number {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 64px;
+  font-weight: 300;
+  color: rgba(201,149,43,.08);
+  line-height: 1;
+  margin-bottom: 12px;
+  transition: color .3s;
+}
+.coll-item:hover .coll-number { color: rgba(201,149,43,.15); }
+.coll-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--white);
+  margin-bottom: 10px;
+}
+.coll-desc {
+  font-size: 12px;
+  line-height: 1.8;
+  color: rgba(248,243,235,.4);
+  margin-bottom: 24px;
+}
+.coll-tag {
+  font-size: 8px;
+  letter-spacing: .4em;
+  color: var(--gold);
+  text-transform: uppercase;
+  opacity: .7;
+}
+.coll-line {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  width: 0;
+  background: linear-gradient(90deg, var(--gold), transparent);
+  transition: width .5s ease;
+}
+.coll-item:hover .coll-line { width: 100%; }
+
+/* =========================================
+   BRAND PILLARS
+========================================= */
+.pillars-section {
+  padding: 80px 80px 120px;
+  background: var(--black2);
+  border-top: 1px solid rgba(201,149,43,.06);
+}
+.pillars-inner {
+  max-width: 1300px;
+  margin: 0 auto;
+}
+.pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 1px;
+  background: rgba(201,149,43,.08);
+  margin-top: 64px;
+}
+.pillar {
+  background: var(--black2);
+  padding: 40px 28px;
+  text-align: center;
+  transition: background .3s;
+}
+.pillar:hover { background: var(--black3); }
+.pillar-icon {
+  font-size: 28px;
+  margin-bottom: 16px;
+  display: block;
+  opacity: .7;
+}
+.pillar-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--white);
+  margin-bottom: 8px;
+  letter-spacing: .05em;
+}
+.pillar-text {
+  font-size: 11px;
+  line-height: 1.75;
+  color: rgba(248,243,235,.4);
+}
+
+/* =========================================
+   NOTIFY / CTA SECTION
+========================================= */
+.notify-section {
+  padding: 120px 80px;
+  max-width: 1300px;
+  margin: 0 auto;
+  text-align: center;
+}
+.notify-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(36px, 5vw, 68px);
+  font-weight: 300;
+  color: var(--white);
+  margin-bottom: 16px;
+  line-height: 1.1;
+}
+.notify-title em {
+  font-style: italic;
+  color: var(--gold2);
+  opacity: .7;
+}
+.notify-sub {
+  font-size: 12px;
+  letter-spacing: .2em;
+  color: rgba(248,243,235,.4);
+  margin-bottom: 52px;
+  text-transform: uppercase;
+}
+.notify-form {
+  display: flex;
+  max-width: 520px;
+  margin: 0 auto 24px;
+  gap: 0;
+}
+.notify-input {
+  flex: 1;
+  background: transparent;
+  border: 1px solid rgba(201,149,43,.25);
+  border-right: none;
+  color: var(--cream);
+  padding: 16px 22px;
+  font-family: 'Raleway', sans-serif;
+  font-size: 12px;
+  font-weight: 300;
+  outline: none;
+  transition: border-color .3s;
+}
+.notify-input::placeholder { color: rgba(248,243,235,.2); }
+.notify-input:focus { border-color: rgba(201,149,43,.55); }
+.notify-btn {
+  padding: 16px 32px;
+  background: var(--gold);
+  color: var(--black);
+  border: none;
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .3em;
+  cursor: pointer;
+  transition: all .3s;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.notify-btn:hover {
+  background: var(--gold3);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(201,149,43,.2);
+}
+.notify-privacy {
+  font-size: 10px;
+  color: rgba(248,243,235,.25);
+  letter-spacing: .1em;
+}
+
+/* =========================================
+   SOCIAL SECTION
+========================================= */
+.social-section {
+  padding: 80px;
+  background: var(--black2);
+  border-top: 1px solid rgba(201,149,43,.08);
+  border-bottom: 1px solid rgba(201,149,43,.08);
+}
+.social-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+.social-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 36px;
+  font-style: italic;
+  font-weight: 300;
+  color: rgba(248,243,235,.6);
+  margin-bottom: 8px;
+}
+.social-sub {
+  font-size: 9px;
+  letter-spacing: .5em;
+  color: rgba(201,149,43,.4);
+  text-transform: uppercase;
+  margin-bottom: 52px;
+}
+.social-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.social-link {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 32px;
+  border: 1px solid rgba(201,149,43,.15);
+  background: var(--black);
+  text-decoration: none;
+  color: var(--cream);
+  transition: all .35s ease;
+  position: relative;
+  overflow: hidden;
+}
+.social-link::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(201,149,43,.1), transparent);
+  opacity: 0;
+  transition: opacity .35s;
+}
+.social-link:hover {
+  border-color: rgba(201,149,43,.4);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(0,0,0,.4);
+}
+.social-link:hover::before { opacity: 1; }
+.social-icon {
+  width: 22px;
+  height: 22px;
+  opacity: .7;
+  flex-shrink: 0;
+  transition: opacity .3s;
+}
+.social-link:hover .social-icon { opacity: 1; }
+.social-handle {
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .2em;
+  color: var(--cream);
+  position: relative;
+}
+.social-platform {
+  font-size: 8px;
+  letter-spacing: .35em;
+  color: var(--gold);
+  text-transform: uppercase;
+  position: relative;
+}
+.social-text { display: flex; flex-direction: column; gap: 3px; }
+
+/* =========================================
+   FOOTER
+========================================= */
+footer {
+  padding: 64px 80px 40px;
+  background: var(--black);
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 56px;
+  max-width: 1100px;
+  margin: 0 auto 48px;
+}
+.footer-brand img {
+  height: 56px;
+  width: auto;
+  margin-bottom: 16px;
+  filter: drop-shadow(0 2px 8px rgba(201,149,43,.2));
+}
+.footer-brand-name {
+  font-family: 'Cinzel', serif;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: .4em;
+  color: var(--cream);
+  margin-bottom: 6px;
+}
+.footer-tagline {
+  font-size: 10px;
+  letter-spacing: .25em;
+  color: rgba(201,149,43,.4);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.footer-origin {
+  font-size: 11px;
+  color: rgba(248,243,235,.25);
+  line-height: 1.8;
+}
+.footer-col-title {
+  font-size: 8px;
+  letter-spacing: .45em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.footer-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.footer-links a {
+  font-size: 12px;
+  color: rgba(248,243,235,.3);
+  text-decoration: none;
+  transition: color .3s;
+  cursor: pointer;
+  letter-spacing: .05em;
+}
+.footer-links a:hover { color: var(--cream); }
+.footer-bottom {
+  border-top: 1px solid rgba(201,149,43,.06);
+  padding-top: 28px;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.footer-copy {
+  font-size: 10px;
+  color: rgba(248,243,235,.2);
+  letter-spacing: .15em;
+}
+.footer-made {
+  font-size: 10px;
+  color: rgba(248,243,235,.2);
+}
+.footer-made span { color: var(--gold); }
+
+/* =========================================
+   GOLD SHIMMER TEXT
+========================================= */
+.shimmer-text {
+  background: linear-gradient(
+    90deg,
+    var(--gold-dark) 0%,
+    var(--gold) 25%,
+    var(--gold3) 50%,
+    var(--gold) 75%,
+    var(--gold-dark) 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 4s linear infinite;
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+@media (max-width: 1024px) {
+  nav { padding: 0 32px; }
+  .section, .notify-section, .countries-section { padding: 80px 40px; }
+  .about-grid { grid-template-columns: 1fr; gap: 48px; }
+  .products-inner, .collections-section, .pillars-section { padding-left: 40px; padding-right: 40px; }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 36px; }
+  footer { padding: 48px 40px 32px; }
+  .social-section { padding: 60px 40px; }
+}
+@media (max-width: 768px) {
+  .nav-links, .nav-cta { display: none; }
+  .hero-logo { width: 200px; }
+  .product-grid { grid-template-columns: 1fr; }
+  .coll-grid { grid-template-columns: 1fr; }
+  .pillars-grid { grid-template-columns: 1fr 1fr; }
+  .countries-grid { grid-template-columns: 1fr; }
+  .notify-form { flex-direction: column; }
+  .notify-input { border-right: 1px solid rgba(201,149,43,.25); border-bottom: none; }
+  .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+  .social-links { flex-direction: column; align-items: stretch; }
+  .social-link { justify-content: center; }
+}
+@media (max-width: 480px) {
+  .section, .notify-section, .countries-section, .products-inner, .collections-section, .pillars-section, footer, .social-section { padding-left: 24px; padding-right: 24px; }
+  .pillars-grid { grid-template-columns: 1fr; }
+  nav { padding: 0 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== NAVIGATION ===== -->
+<nav id="nav">
+  <div class="nav-logo">
+    <img src="/mnt/user-data/uploads/ChatGPT_Image_28__Apr__2026__20_12_10.png" alt="SHUMPHY Logo">
+  </div>
+  <ul class="nav-links">
+    <li><a href="#about">Brand</a></li>
+    <li><a href="#collection">Collection</a></li>
+    <li><a href="#launch">Launch</a></li>
+    <li><a href="#social">Follow</a></li>
+  </ul>
+  <button class="nav-cta" onclick="document.getElementById('notify').scrollIntoView({behavior:'smooth'})">Notify Me</button>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <img class="hero-logo" src="/mnt/user-data/uploads/ChatGPT_Image_28__Apr__2026__20_12_10.png" alt="SHUMPHY">
+
+  <p class="hero-eyebrow">Est. Essen, Germany · Premium Menswear</p>
+
+  <h1 class="hero-title">
+    <span class="shimmer-text">SHUMPHY</span>
+    <span class="hero-title-italic">Clothing For Every Moment</span>
+  </h1>
+
+  <p class="hero-tagline">T-Shirts · Drop Shoulder · Hoodies · Menswear</p>
+
+  <div class="gold-divider">
+    <div class="gold-divider-ornament"></div>
+  </div>
+
+  <div class="launch-badge">
+    <div class="launch-dot"></div>
+    <span class="launch-text">Launching Soon in India & Germany</span>
+    <div class="launch-dot"></div>
+  </div>
+</section>
+
+<!-- ===== TICKER ===== -->
+<div class="ticker-wrap">
+  <div class="ticker-track">
+    <span class="ticker-item">SHUMPHY</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">Premium Menswear</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">Made in Germany</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">T-Shirts</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">Drop Shoulder</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">Hoodies</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">Launching Soon</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">India · Germany</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">Wear Every Moment</span><span class="ticker-sep">◆</span>
+    <!-- duplicate for seamless loop -->
+    <span class="ticker-item">SHUMPHY</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">Premium Menswear</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">Made in Germany</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">T-Shirts</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">Drop Shoulder</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">Hoodies</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">Launching Soon</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">India · Germany</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">Wear Every Moment</span><span class="ticker-sep">◆</span>
+  </div>
+</div>
+
+<!-- ===== ABOUT ===== -->
+<section id="about">
+  <div class="section">
+    <div class="about-grid">
+      <div>
+        <p class="section-eyebrow reveal">The Brand</p>
+        <h2 class="section-title reveal reveal-delay-1">
+          A German luxury brand<br><em>rooted in identity</em>
+        </h2>
+        <p class="section-body reveal reveal-delay-2">
+          SHUMPHY is a premium German menswear brand born in Essen — a city forged in steel, fire and unbreakable spirit. We design clothing for men who know who they are. Every piece carries meaning. Every garment tells a story.
+        </p>
+        <br>
+        <p class="section-body reveal reveal-delay-3">
+          From the industrial heart of Ruhrgebiet to the fashion capitals of Europe and Asia, SHUMPHY stands for one thing: <em style="color:var(--gold2);font-style:italic">wearing your identity with pride.</em> Premium fabrics. Considered design. Clothing for every moment of a man's life.
+        </p>
+      </div>
+
+      <div class="reveal reveal-delay-2">
+        <div class="about-frame">
+          <img class="about-frame-logo" src="/mnt/user-data/uploads/ChatGPT_Image_28__Apr__2026__20_12_10.png" alt="SHUMPHY">
+          <p class="about-frame-tagline">"Clothing For Every Moment"</p>
+          <p class="about-frame-origin">Essen, Germany · Est. 2025</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PRODUCTS ===== -->
+<section id="collection" class="products-section">
+  <div class="products-inner">
+    <div class="products-header">
+      <div>
+        <p class="section-eyebrow reveal">What We Make</p>
+        <h2 class="section-title reveal reveal-delay-1">The Collection</h2>
+      </div>
+      <div class="reveal reveal-delay-2">
+        <p style="font-size:10px;letter-spacing:.4em;color:rgba(201,149,43,.4);text-transform:uppercase">Full collection launching soon</p>
+      </div>
+    </div>
+
+    <div class="product-grid">
+
+      <!-- T-SHIRTS -->
+      <div class="product-card reveal">
+        <div class="product-img">
+          <div class="product-placeholder">
+            <svg class="prod-icon" viewBox="0 0 64 64" fill="none">
+              <path d="M8 20L20 12H44L56 20L48 26V56H16V26L8 20Z" stroke="#c9952b" stroke-width="1.5" stroke-linejoin="round"/>
+              <path d="M20 12C20 12 24 18 32 18C40 18 44 12 44 12" stroke="#c9952b" stroke-width="1.5"/>
+            </svg>
+            <p class="prod-coming">T-Shirts · Coming Soon</p>
+          </div>
+        </div>
+        <div style="padding:28px;background:var(--black3)">
+          <p class="product-cat">Men's Essentials</p>
+          <p class="product-name">Signature T-Shirts</p>
+          <p style="font-size:12px;color:rgba(248,243,235,.4);line-height:1.7;margin-top:8px">Premium cotton T-shirts crafted for the modern man. Clean lines, perfect fit, timeless style. Available in a curated palette from classic black to earthy tones.</p>
+        </div>
+      </div>
+
+      <!-- DROP SHOULDER -->
+      <div class="product-card reveal reveal-delay-1">
+        <div class="product-img">
+          <div class="product-placeholder">
+            <svg class="prod-icon" viewBox="0 0 64 64" fill="none">
+              <path d="M4 16L18 8H46L60 16L52 24V56H12V24L4 16Z" stroke="#c9952b" stroke-width="1.5" stroke-linejoin="round"/>
+              <path d="M18 8C18 8 22 16 32 16C42 16 46 8 46 8" stroke="#c9952b" stroke-width="1.5"/>
+              <line x1="12" y1="24" x2="52" y2="24" stroke="#c9952b" stroke-width="1" stroke-dasharray="3,3"/>
+            </svg>
+            <p class="prod-coming">Drop Shoulder · Coming Soon</p>
+          </div>
+        </div>
+        <div style="padding:28px;background:var(--black3)">
+          <p class="product-cat">Statement Pieces</p>
+          <p class="product-name">Drop Shoulder Tees</p>
+          <p style="font-size:12px;color:rgba(248,243,235,.4);line-height:1.7;margin-top:8px">The oversized silhouette redefined. SHUMPHY drop shoulder tees sit at the intersection of street culture and luxury. Relaxed. Intentional. Unmistakably yours.</p>
+        </div>
+      </div>
+
+      <!-- HOODIES -->
+      <div class="product-card reveal reveal-delay-2">
+        <div class="product-img">
+          <div class="product-placeholder">
+            <svg class="prod-icon" viewBox="0 0 64 64" fill="none">
+              <path d="M10 22L20 14C20 14 24 20 32 20C40 20 44 14 44 14L54 22L50 30V56H14V30L10 22Z" stroke="#c9952b" stroke-width="1.5" stroke-linejoin="round"/>
+              <path d="M24 14C24 14 26 22 32 22C38 22 40 14 40 14" stroke="#c9952b" stroke-width="1.5"/>
+              <path d="M14 30H28C28 30 28 34 32 34C36 34 36 30 50 30" stroke="#c9952b" stroke-width="1.5"/>
+            </svg>
+            <p class="prod-coming">Hoodies · Coming Soon</p>
+          </div>
+        </div>
+        <div style="padding:28px;background:var(--black3)">
+          <p class="product-cat">Premium Outerwear</p>
+          <p class="product-name">Luxury Hoodies</p>
+          <p style="font-size:12px;color:rgba(248,243,235,.4);line-height:1.7;margin-top:8px">Heavy-weight premium hoodies built for comfort and presence. The SHUMPHY SH monogram sits on the chest — a quiet signal of excellence. Crafted to last a lifetime.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== COLLECTIONS ===== -->
+<section class="collections-section">
+  <p class="section-eyebrow reveal">Collections</p>
+  <h2 class="section-title reveal reveal-delay-1">Three lines. <em>One identity.</em></h2>
+  <div class="coll-grid">
+    <div class="coll-item reveal">
+      <p class="coll-number">01</p>
+      <p class="coll-name">The Essential</p>
+      <p class="coll-desc">Everyday luxury. Premium cotton basics that look expensive without trying. The foundation of every SHUMPHY wardrobe — T-shirts and drop shoulders in a refined, minimal palette.</p>
+      <p class="coll-tag">T-Shirts · Drop Shoulder</p>
+      <div class="coll-line"></div>
+    </div>
+    <div class="coll-item reveal reveal-delay-1">
+      <p class="coll-number">02</p>
+      <p class="coll-name">The Statement</p>
+      <p class="coll-desc">When you want to be noticed. Bold graphics, the iconic SH monogram, and oversized silhouettes. For men who dress with intention and wear their identity outward.</p>
+      <p class="coll-tag">Drop Shoulder · Graphic Tees</p>
+      <div class="coll-line"></div>
+    </div>
+    <div class="coll-item reveal reveal-delay-2">
+      <p class="coll-number">03</p>
+      <p class="coll-name">The Heritage</p>
+      <p class="coll-desc">Essen meets Karnataka. Limited pieces inspired by the founder's Indian roots and German home. The most personal SHUMPHY collection — city pride worn as luxury.</p>
+      <p class="coll-tag">Hoodies · Limited Edition</p>
+      <div class="coll-line"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== BRAND PILLARS ===== -->
+<section class="pillars-section">
+  <div class="pillars-inner">
+    <div style="text-align:center;margin-bottom:0">
+      <p class="section-eyebrow reveal" style="text-align:center">Why SHUMPHY</p>
+      <h2 class="section-title reveal reveal-delay-1" style="text-align:center;max-width:600px;margin:0 auto">The pillars of <em>our brand</em></h2>
+    </div>
+    <div class="pillars-grid" style="margin-top:64px">
+      <div class="pillar reveal">
+        <span class="pillar-icon">⚡</span>
+        <p class="pillar-title">German Quality</p>
+        <p class="pillar-text">Born in Essen, Germany. Every piece meets the standard of German precision — durable, considered, built to last.</p>
+      </div>
+      <div class="pillar reveal reveal-delay-1">
+        <span class="pillar-icon">♦</span>
+        <p class="pillar-title">Luxury Fabric</p>
+        <p class="pillar-text">Premium cotton blends and heavyweight fleece. Softness you feel, structure that holds. No compromise on material.</p>
+      </div>
+      <div class="pillar reveal reveal-delay-2">
+        <span class="pillar-icon">✦</span>
+        <p class="pillar-title">Identity First</p>
+        <p class="pillar-text">Every SHUMPHY piece carries the SH monogram — a quiet mark of authenticity. Wear who you are, not a logo.</p>
+      </div>
+      <div class="pillar reveal reveal-delay-3">
+        <span class="pillar-icon">◎</span>
+        <p class="pillar-title">Global Reach</p>
+        <p class="pillar-text">Launching in India and Germany simultaneously. A brand that understands two worlds and dresses both with equal pride.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== LAUNCH COUNTRIES ===== -->
+<section id="launch">
+  <div class="countries-section">
+    <p class="section-eyebrow reveal" style="text-align:center">Now Launching</p>
+    <h2 class="section-title reveal reveal-delay-1" style="text-align:center;margin:0 auto;max-width:700px">
+      Two countries.<br><em>One brand.</em>
+    </h2>
+    <p class="section-body reveal reveal-delay-2" style="text-align:center;margin:20px auto 0;max-width:520px">
+      SHUMPHY is launching simultaneously in India and Germany. Visit your country's dedicated store for the full collection, local pricing, and fast shipping.
+    </p>
+
+    <div class="countries-grid">
+
+      <!-- INDIA -->
+      <a href="https://www.shumphy.in" target="_blank" rel="noopener" class="country-card reveal">
+        <span class="country-flag">🇮🇳</span>
+        <p class="country-name">India</p>
+        <p class="country-domain">www.shumphy.in</p>
+        <span class="country-status">Coming Soon</span>
+        <p style="font-size:11px;color:rgba(248,243,235,.35);margin-top:20px;letter-spacing:.1em;line-height:1.7">
+          Launching across India with local pricing in INR. Fast delivery to all major cities.
+        </p>
+        <span class="country-arrow">→</span>
+      </a>
+
+      <!-- GERMANY -->
+      <a href="https://www.shumphy.de" target="_blank" rel="noopener" class="country-card reveal reveal-delay-1">
+        <span class="country-flag">🇩🇪</span>
+        <p class="country-name">Deutschland</p>
+        <p class="country-domain">www.shumphy.de</p>
+        <span class="country-status">Coming Soon</span>
+        <p style="font-size:11px;color:rgba(248,243,235,.35);margin-top:20px;letter-spacing:.1em;line-height:1.7">
+          The home of SHUMPHY. Launching in Germany with EUR pricing and same-day dispatch from Essen.
+        </p>
+        <span class="country-arrow">→</span>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== NOTIFY ===== -->
+<section id="notify" style="background:var(--black2);border-top:1px solid rgba(201,149,43,.06)">
+  <div class="notify-section">
+    <p class="section-eyebrow reveal" style="text-align:center">Be First</p>
+    <h2 class="notify-title reveal reveal-delay-1">
+      Get notified<br><em>before anyone else</em>
+    </h2>
+    <p class="notify-sub reveal reveal-delay-2">Early access · Exclusive drops · Launch discounts</p>
+    <div class="reveal reveal-delay-3">
+      <form class="notify-form" onsubmit="handleNotify(event)">
+        <input class="notify-input" type="email" placeholder="Your email address" required id="notifyEmail">
+        <button type="submit" class="notify-btn">Notify Me</button>
+      </form>
+    </div>
+    <p class="notify-privacy reveal reveal-delay-4">No spam. Only launch news. Unsubscribe anytime.</p>
+    <div id="notifySuccess" style="display:none;margin-top:20px;font-size:12px;color:var(--gold);letter-spacing:.2em;text-align:center">
+      ✦ You're on the list. We'll be in touch.
+    </div>
+  </div>
+</section>
+
+<!-- ===== SOCIAL ===== -->
+<section id="social" class="social-section">
+  <div class="social-inner">
+    <p class="social-title reveal">"Follow the journey"</p>
+    <p class="social-sub reveal reveal-delay-1">Find us on social media</p>
+
+    <div class="social-links">
+
+      <!-- INSTAGRAM -->
+      <a href="https://www.instagram.com/shumphystudio" target="_blank" rel="noopener" class="social-link reveal">
+        <svg class="social-icon" viewBox="0 0 24 24" fill="none">
+          <rect x="2" y="2" width="20" height="20" rx="5" stroke="#c9952b" stroke-width="1.5"/>
+          <circle cx="12" cy="12" r="5" stroke="#c9952b" stroke-width="1.5"/>
+          <circle cx="17.5" cy="6.5" r="1" fill="#c9952b"/>
+        </svg>
+        <div class="social-text">
+          <span class="social-handle">@shumphystudio</span>
+          <span class="social-platform">Instagram</span>
+        </div>
+      </a>
+
+      <!-- PINTEREST -->
+      <a href="https://www.pinterest.com/shumphy" target="_blank" rel="noopener" class="social-link reveal reveal-delay-1">
+        <svg class="social-icon" viewBox="0 0 24 24" fill="none">
+          <path d="M12 2C6.477 2 2 6.477 2 12C2 16.236 4.636 19.855 8.356 21.307C8.268 20.52 8.188 19.322 8.394 18.464L9.534 13.646C9.534 13.646 9.21 12.996 9.21 12.032C9.21 10.508 10.098 9.37 11.204 9.37C12.14 9.37 12.59 10.068 12.59 10.906C12.59 11.842 11.992 13.232 11.684 14.52C11.428 15.6 12.224 16.48 13.288 16.48C15.21 16.48 16.694 14.426 16.694 11.492C16.694 8.89 14.826 7.078 12.156 7.078C9.064 7.078 7.246 9.42 7.246 11.84C7.246 12.78 7.606 13.79 8.058 14.338C8.144 14.44 8.156 14.53 8.132 14.634L7.824 15.876C7.782 16.05 7.686 16.088 7.506 16.004C6.096 15.322 5.208 13.33 5.208 11.8C5.208 8.312 7.698 5.108 12.424 5.108C16.238 5.108 19.18 7.794 19.18 11.434C19.18 15.232 16.804 18.282 13.468 18.282C12.37 18.282 11.338 17.72 11.002 17.056L10.336 19.514C10.09 20.436 9.444 21.598 9.008 22.296C9.988 22.586 11.024 22.74 12.096 22.74C17.62 22.74 22.096 18.264 22.096 12.74C22 6.477 17.523 2 12 2Z" stroke="#c9952b" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <div class="social-text">
+          <span class="social-handle">@shumphy</span>
+          <span class="social-platform">Pinterest</span>
+        </div>
+      </a>
+
+      <!-- TIKTOK -->
+      <a href="https://www.tiktok.com/@shumphyofficial" target="_blank" rel="noopener" class="social-link reveal reveal-delay-2">
+        <svg class="social-icon" viewBox="0 0 24 24" fill="none">
+          <path d="M19.321 5.562a5.124 5.124 0 01-.443-.258 6.228 6.228 0 01-1.137-.966c-.849-.971-1.166-1.959-1.282-2.648h.004C16.384 1.297 16.43 1 16.43 1H12.7v14.44c0 .194 0 .386-.008.576-.008.198-.024.382-.05.558a3.388 3.388 0 01-1.093 2.08 3.312 3.312 0 01-2.16.798 3.369 3.369 0 01-3.379-3.379 3.369 3.369 0 013.379-3.378c.33 0 .648.048.95.136V9.053a7.23 7.23 0 00-.95-.062 7.1 7.1 0 00-5.064 2.1A6.97 6.97 0 002 16.026 6.97 6.97 0 004.323 21.1a7.1 7.1 0 005.064 2.1 7.1 7.1 0 005.064-2.1 6.97 6.97 0 002.322-5.074V9.39a9.98 9.98 0 005.84 1.88V7.549a5.144 5.144 0 01-3.292-1.987z" stroke="#c9952b" stroke-width="1.2"/>
+        </svg>
+        <div class="social-text">
+          <span class="social-handle">@shumphyofficial</span>
+          <span class="social-platform">TikTok</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <img src="/mnt/user-data/uploads/ChatGPT_Image_28__Apr__2026__20_12_10.png" alt="SHUMPHY">
+      <p class="footer-brand-name">SHUMPHY</p>
+      <p class="footer-tagline">Clothing For Every Moment</p>
+      <p class="footer-origin">
+        A premium German menswear brand<br>
+        Founded in Essen, Ruhrgebiet<br>
+        Launching in India & Germany · 2025
+      </p>
+    </div>
+    <div>
+      <p class="footer-col-title">Shop By Country</p>
+      <ul class="footer-links">
+        <li><a href="https://www.shumphy.in" target="_blank">🇮🇳 India — shumphy.in</a></li>
+        <li><a href="https://www.shumphy.de" target="_blank">🇩🇪 Germany — shumphy.de</a></li>
+        <li><a href="https://www.shumphy.com">🌍 Global — shumphy.com</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-col-title">Follow Us</p>
+      <ul class="footer-links">
+        <li><a href="https://www.instagram.com/shumphystudio" target="_blank">Instagram @shumphystudio</a></li>
+        <li><a href="https://www.pinterest.com/shumphy" target="_blank">Pinterest @shumphy</a></li>
+        <li><a href="https://www.tiktok.com/@shumphyofficial" target="_blank">TikTok @shumphyofficial</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">© 2025 SHUMPHY — All rights reserved · Essen, Germany</p>
+    <p class="footer-made">Designed with <span>♥</span> in Essen · India</p>
+  </div>
+</footer>
+
+<!-- ===== JAVASCRIPT ===== -->
+<script>
+// Sticky nav
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// Scroll reveal
+const revealEls = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+revealEls.forEach(el => observer.observe(el));
+
+// Notify form
+function handleNotify(e) {
+  e.preventDefault();
+  const email = document.getElementById('notifyEmail').value;
+  if (email) {
+    document.getElementById('notifySuccess').style.display = 'block';
+    document.getElementById('notifyEmail').value = '';
+    document.querySelector('.notify-form').style.opacity = '.4';
+  }
+}
+
+// Smooth scroll for nav links
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+</script>
+</body>
+</html>
