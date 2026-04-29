@@ -29,12 +29,15 @@
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; font-size: 16px; }
 body {
-  background: var(--black);
+   background: var(--black);
   color: var(--cream);
   font-family: 'Raleway', sans-serif;
-  font-weight: 300;
-  overflow-x: hidden;
-  cursor: default;
+
+  max-width: 1600px;
+  margin: 0 auto;
+
+   line-height: 1.6;
+  letter-spacing: 0.02em;
 }
 
 /* Custom scrollbar */
@@ -373,8 +376,8 @@ nav.scrolled {
    ABOUT SECTION
 ========================================= */
 .section {
-  padding: 120px 80px;
-  max-width: 1300px;
+  padding: 120px 40px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 .section-eyebrow {
@@ -482,7 +485,7 @@ nav.scrolled {
 .product-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 2px;
+  gap: 24px;
 }
 .product-card {
   position: relative;
@@ -670,9 +673,9 @@ nav.scrolled {
    COLLECTIONS TEASER
 ========================================= */
 .collections-section {
-  padding: 160px 80px 120px;
-  max-width: 1300px;
+ max-width: 1200px;
   margin: 0 auto;
+  padding: 160px 40px 120px;
 }
 .coll-grid {
   display: grid;
