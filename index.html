@@ -129,14 +129,26 @@ nav.scrolled {
   align-items: center;
   gap: 14px;
 }
-.nav-logo img,
-.about-frame-logo,
-.footer-brand img {
+.nav-logo img {
+  height: 42px;
   width: auto;
+  max-width: 140px;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 2px 8px rgba(201,149,43,.3));
+}
+
+.about-frame-logo {
+  width: 200px;
   height: auto;
+  object-fit: contain;
+}
+
+.footer-brand img {
+  height: 56px;
+  width: auto;
   max-width: 180px;
   object-fit: contain;
-
 }
 .nav-brand {
   font-family: 'Cinzel', serif;
